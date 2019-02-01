@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-6">
+      <h2>Student Registartion Form</h2>
+      <div class="text-success" *ngIf="formSubmitted">Form is Submitted</div>
+      <form #studentForm="ngForm" (ngSubmit)="onSubmit()" novalidate *ngIf="!formSubmitted">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" required [class.is-invalid]="!name.untouched && !name.valid" #name="ngModel" name="name" [(ngModel)]="userModel.name"/>
+          </div>
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" class="form-control" required [class.is-invalid]="!age.untouched && !age.valid" #age="ngModel" name="age" [(ngModel)]="userModel.age"/>
+          </div>
+          <div class="form-group">
+            <label for="email">Email ID</label>
+            <input type="email" id="email" class="form-control" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" required [class.is-invalid]="email.touched && email.invalid" #email="ngModel" name="email" [(ngModel)]="userModel.email"/>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" pattern="^\d{10}$" required [class.is-invalid]="phone.invalid && phone.untouched" #phone="ngModel" name="phone" [(ngModel)]="userModel.phone"/>
+          </div>
+          <div class="form-group">
+            <label for="department">Department</label>
+            <select id="department" class="custom-select" (blur)="validateDepartment(department.value)" (click)="validateDepartment(department.value)" required [class.is-invalid]="departmentHasError && department.touched" #department="ngModel" name="department" [(ngModel)]="userModel.department">
+              <option value="default">I'm interested in</option>
+              <option *ngFor='let department of departments'>{{department}}</option>
+            </select>
+            <small class="text-danger" [class.d-none]="!departmentHasError || department.untouched">Please choose a valid department</small>
+          </div>
+          <div class="mb-3">
+            <label>Mode of Education</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="regular" value="regular" name="modeofEductaion" [(ngModel)]="userModel.modeofEductaion">
+              <label class="form-check-label" for="regular">Regular</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="correspondence" value="correspondence" name="modeofEductaion" [(ngModel)]="userModel.modeofEductaion">
+              <label class="form-check-label" for="correspondence">Correspondence</label>
+            </div>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="subscribe" #subscribe="ngModel" name="subscribe" [(ngModel)]="userModel.subscribe">
+            <label class="form-check-label" for="subscribe">Subscribe to Email Notifications</label>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!studentForm.form.valid || departmentHasError">Submit</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+<router-outlet></router-outlet>
+<!--This renders the routed components here-->
